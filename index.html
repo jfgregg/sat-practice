@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SAT Math Practice</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one centred worksheet column on graph paper; the sheet becomes a score sheet on submit. */
+:root{
+  --paper:#EEF2F6; --grid:rgba(28,43,57,.07); --card:#FFFFFF;
+  --ink:#1C2B39; --ink-soft:#4A5C6B; --rule:rgba(28,43,57,.16);
+  --blue:#2B5F82; --blue-text:#2B5F82; --on-blue:#FFFFFF; --blue-hover:#1D4560;
+  --gold:#8F6618;
+  --green:#2F6B3D; --green-bg:#E4F1E7; --ok-solid:#2F6B3D;
+  --red:#A93636; --red-bg:#FBEAEA; --bad-solid:#A93636;
+  --amber:#8F6618; --amber-bg:#FBF3E3;
+  --display:'Fraunces',Georgia,serif;
+  --body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1822; --grid:rgba(232,238,243,.05); --card:#152230;
+    --ink:#E8EEF3; --ink-soft:#9FB0BE; --rule:rgba(232,238,243,.18);
+    --blue:#2B5F82; --blue-text:#86B9DC; --on-blue:#FFFFFF; --blue-hover:#3A76A0;
+    --gold:#D9A84E;
+    --green:#7CCB8E; --green-bg:#173222; --ok-solid:#2F7D45;
+    --red:#F08C8C; --red-bg:#351C1C; --bad-solid:#B84444;
+    --amber:#D9A84E; --amber-bg:#33291A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1822; --grid:rgba(232,238,243,.05); --card:#152230;
+  --ink:#E8EEF3; --ink-soft:#9FB0BE; --rule:rgba(232,238,243,.18);
+  --blue:#2B5F82; --blue-text:#86B9DC; --on-blue:#FFFFFF; --blue-hover:#3A76A0;
+  --gold:#D9A84E;
+  --green:#7CCB8E; --green-bg:#173222; --ok-solid:#2F7D45;
+  --red:#F08C8C; --red-bg:#351C1C; --bad-solid:#B84444;
+  --amber:#D9A84E; --amber-bg:#33291A;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; font-family:var(--body); font-size:15px; line-height:1.5; color:var(--ink);
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px; min-height:100vh;
+}
+.wrap{max-width:760px;margin:0 auto;padding-block:24px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.brand{font:600 20px var(--display);color:var(--ink);background:none;border:0;padding:4px 0;cursor:pointer}
+.brand span{color:var(--blue-text)}
+.eyebrow{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0 0 8px}
+h1{font:600 26px/1.2 var(--display);margin:0 0 8px;text-wrap:balance}
+h2{font:600 20px/1.25 var(--display);margin:0 0 12px;text-wrap:balance}
+.lede{color:var(--ink-soft);margin:0 0 20px;max-width:65ch}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:24px}
+.stack{display:flex;flex-direction:column;gap:20px}
+label.field{display:block;font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
+input[type=text],textarea,select{width:100%;font:15px var(--body);padding:10px 12px;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink)}
+textarea{font-family:var(--mono);font-size:13px;resize:vertical}
+input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--blue-text);outline-offset:2px}
+.btn{font:600 14.5px var(--body);background:var(--blue);color:var(--on-blue);border:0;padding:11px 20px;border-radius:4px;cursor:pointer}
+.btn:hover{background:var(--blue-hover)}
+.btn:disabled{background:var(--rule);color:var(--ink-soft);cursor:not-allowed}
+.btn.alt,.ghost{background:none;color:var(--blue-text);border:1px solid var(--blue-text)}
+.btn.alt:hover,.ghost:hover{background:var(--grid)}
+.ghost{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:7px 12px;border-radius:3px;cursor:pointer;color:var(--ink-soft);border-color:var(--rule)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.err{color:var(--red);font-size:13px;margin:8px 0 0}
+.note{font-size:13px;color:var(--ink-soft);margin:10px 0 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+.lesson{text-align:left;background:var(--card);border:1px solid var(--rule);border-radius:5px;padding:16px;cursor:pointer;color:var(--ink);font:inherit;position:relative}
+.lesson:hover{border-color:var(--blue-text)}
+.lesson .num{font:600 11px var(--mono);letter-spacing:.06em;color:var(--gold)}
+.lesson .ttl{font:600 16px var(--display);margin-top:4px}
+.lesson .meta{font-size:12px;color:var(--ink-soft);margin-top:6px}
+.lesson .done{position:absolute;top:12px;right:12px;font:600 10px var(--mono);color:var(--green)}
+.quiz-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:8px}
+.timer{font:500 13px var(--mono);color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.q{border:0;border-top:1px solid var(--rule);padding:20px 0;margin:0;min-width:0}
+.q:first-of-type{border-top:0}
+.q-topic{font:500 10.5px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--blue-text);margin-bottom:6px}
+.q-text{font-size:15.5px;margin:0 0 12px;padding:0;max-width:65ch}
+.opt{display:flex;align-items:center;gap:12px;padding:8px 6px;border-radius:4px;cursor:pointer}
+.opt:hover{background:var(--grid)}
+.sr{position:absolute;opacity:0;width:1px;height:1px}
+.bubble{flex:none;width:26px;height:26px;border-radius:50%;border:1.6px solid var(--ink-soft);display:flex;align-items:center;justify-content:center;font:600 11px var(--mono);color:var(--ink-soft)}
+.sr:checked + .bubble{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.sr:focus-visible + .bubble{outline:2px solid var(--blue-text);outline-offset:2px}
+.opt.right .bubble{background:var(--ok-solid);border-color:var(--ok-solid);color:#fff}
+.opt.wrong .bubble{background:var(--bad-solid);border-color:var(--bad-solid);color:#fff}
+.explain{margin-top:10px;font-size:13px;color:var(--ink-soft);background:var(--grid);border-left:3px solid var(--blue-text);padding:9px 12px;border-radius:0 3px 3px 0}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:8px}
+.progress{font:500 12px var(--mono);color:var(--ink-soft)}
+.score{text-align:center;padding:24px 16px}
+.score-big{font:700 44px var(--display);color:var(--blue-text);font-variant-numeric:tabular-nums}
+.sheet{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+.dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:600 11px var(--mono);color:#fff}
+.dot.ok{background:var(--ok-solid)} .dot.no{background:var(--bad-solid)}
+.codebox{border:1px solid var(--blue-text);border-radius:6px;padding:18px;background:var(--card)}
+.codebox h2{margin-bottom:6px}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--rule);white-space:nowrap}
+th{font:600 10.5px var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft)}
+td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.pill{display:inline-block;font:500 11px var(--mono);padding:2px 8px;border-radius:10px}
+.pill.hi{background:var(--green-bg);color:var(--green)} .pill.mid{background:var(--amber-bg);color:var(--amber)} .pill.lo{background:var(--red-bg);color:var(--red)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.stat{border:1px solid var(--rule);border-radius:5px;padding:14px;text-align:center;background:var(--card)}
+.stat b{display:block;font:700 24px var(--display);color:var(--blue-text);font-variant-numeric:tabular-nums}
+.stat span{font:500 10px var(--mono);text-transform:uppercase;color:var(--ink-soft)}
+input.spr{width:min(100%,220px);font:500 16px var(--mono)}
+.hint{font-size:12.5px;color:var(--ink-soft);margin:6px 0 0}
+.hint.bad{color:var(--red)}
+.entry{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;font-size:13px;color:var(--ink-soft);margin:2px 0 4px}
+.entry .mine{font:600 14px var(--mono);padding:4px 10px;border-radius:4px;color:var(--ink);border:1px solid var(--rule)}
+.entry .mine.ok{background:var(--green-bg);color:var(--green);border-color:transparent}
+.entry .mine.no{background:var(--red-bg);color:var(--red);border-color:transparent}
+.report{white-space:pre-wrap;font:13px/1.6 var(--mono);background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:14px;margin:12px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="topbar">
+    <button class="brand" id="brand" type="button">SAT Math <span>Practice</span></button>
+    <button class="ghost" id="roleBtn" type="button">Instructor view</button>
+  </header>
+  <main id="app"></main>
+</div>
+<script>
+(function(){
+"use strict";
+var TAG = "SAT2";
+var DOMAINS = {
+  ALG:"Algebra",
+  ADV:"Advanced Math",
+  PSDA:"Problem-Solving & Data Analysis",
+  GEO:"Geometry & Trigonometry"
+};
+
+/* type "spr" = student-produced response (typed answer); everything else is four-choice.
+   dom = College Board content domain. Numeric options are listed in order, as on the real test. */
+var QUESTIONS = {
+  1: { name:"Number & Algebra", questions:[
+    {id:"L1Q1", dom:"ALG", topic:"Linear Equations", type:"spr", text:"Solve for x: 3(x − 4) = 2x + 5. Enter the value of x.", answer:17, show:"17", explanation:"3x − 12 = 2x + 5, so x = 17."},
+    {id:"L1Q2", dom:"ALG", topic:"Systems of Equations", text:"If 2x + y = 10 and x − y = 2, what is the value of x?", options:["2","3","4","6"], correct:2, explanation:"Adding both equations: 3x = 12, so x = 4."},
+    {id:"L1Q3", dom:"ALG", topic:"Inequalities", text:"Solve the inequality: 5 − 2x > 1", options:["x < 2","x > 2","x < −2","x > −2"], correct:0, explanation:"−2x > −4, and dividing by a negative flips the sign: x < 2."},
+    {id:"L1Q4", dom:"PSDA", topic:"Ratios & Proportions", text:"A recipe uses 3 cups of flour for every 2 cups of sugar. How many cups of flour are needed for 5 cups of sugar?", options:["6","7.5","8","10"], correct:1, explanation:"3/2 = f/5, so f = 7.5."},
+    {id:"L1Q5", dom:"PSDA", topic:"Percentages", text:"A price of $80 increases by 15%. What is the new price?", options:["$95","$92","$88","$84"], correct:1, explanation:"80 × 1.15 = $92."},
+    {id:"L1Q6", dom:"PSDA", topic:"Rates", type:"spr", text:"A car travels 210 miles in 3.5 hours. What is its average speed, in miles per hour?", answer:60, show:"60", explanation:"210 ÷ 3.5 = 60 mph."},
+    {id:"L1Q7", dom:"ADV", topic:"Absolute Value", text:"Solve: |2x − 3| = 7", options:["x = 5 or x = −2","x = 5 only","x = −2 only","x = 2 or x = −5"], correct:0, explanation:"2x − 3 = 7 gives x = 5; 2x − 3 = −7 gives x = −2."},
+    {id:"L1Q8", dom:"ALG", topic:"Word Problems", text:"Sam is twice as old as his sister. In 5 years, the sum of their ages will be 40. How old is Sam now?", options:["10","15","20","25"], correct:2, explanation:"(s+5)+(2s+5)=40 → s=10, so Sam is 2s = 20."}
+  ]},
+  2: { name:"Geometry & Trigonometry", questions:[
+    {id:"L2Q1", dom:"GEO", topic:"Triangles", text:"In triangle ABC, angle A = 50° and angle B = 65°. What is the exterior angle at vertex C?", options:["65°","105°","115°","125°"], correct:2, explanation:"Interior C = 180−50−65 = 65°, so the exterior angle = 180−65 = 115°."},
+    {id:"L2Q2", dom:"GEO", topic:"Circles", text:"A circle has radius 6. What is the length of an arc subtended by a 60° central angle?", options:["π","2π","4π","6π"], correct:1, explanation:"(60/360) × 2π(6) = 2π."},
+    {id:"L2Q3", dom:"GEO", topic:"Area & Perimeter", text:"A 10-by-6 rectangle has a semicircle of diameter 6 removed from one side. What is the remaining area?", options:["60 − 3π","60 − 4.5π","60 − 6π","60 − 9π"], correct:1, explanation:"Semicircle radius 3, area = ½π(3²) = 4.5π; rectangle area 60."},
+    {id:"L2Q4", dom:"GEO", topic:"Volume", text:"A cylinder has radius 4 and height 10. What is its volume in terms of π?", options:["40π","80π","160π","320π"], correct:2, explanation:"V = πr²h = π(16)(10) = 160π."},
+    {id:"L2Q5", dom:"GEO", topic:"Trigonometry", text:"In a right triangle, one angle is 30° and the hypotenuse is 12. What is the length of the side opposite the 30° angle?", options:["4","6","8","6√3"], correct:1, explanation:"opposite = 12 × sin(30°) = 6."},
+    {id:"L2Q6", dom:"GEO", topic:"Pythagorean Theorem", type:"spr", text:"A right triangle has legs of length 9 and 12. What is the length of the hypotenuse?", answer:15, show:"15", explanation:"√(81+144) = √225 = 15."},
+    {id:"L2Q7", dom:"GEO", topic:"Radians", text:"Convert 135° to radians.", options:["π/4","2π/3","3π/4","3π/2"], correct:2, explanation:"135 × π/180 = 3π/4."},
+    {id:"L2Q8", dom:"GEO", topic:"Similarity", type:"spr", text:"Triangle DEF is similar to triangle ABC with a scale factor of 3/2. If AB = 8, what is the length of DE?", answer:12, show:"12", explanation:"8 × 3/2 = 12."}
+  ]},
+  3: { name:"Functions & Scatter Plots", questions:[
+    {id:"L3Q1", dom:"ADV", topic:"Function Notation", text:"If f(x) = 2x² − 3, what is f(−2)?", options:["−5","1","5","11"], correct:2, explanation:"2(4) − 3 = 5."},
+    {id:"L3Q2", dom:"ADV", topic:"Transformations", text:"The graph of y = f(x) is shifted 3 units right and 2 units up. Which equation represents the new graph?", options:["y = f(x+3)+2","y = f(x−3)−2","y = f(x)+3−2","y = f(x−3)+2"], correct:3, explanation:"Shifting right subtracts inside the function; shifting up adds outside."},
+    {id:"L3Q3", dom:"PSDA", topic:"Scatter Plots", text:"A scatter plot shows a strong negative linear relationship between hours of TV watched and test scores. What does the slope of the line of best fit indicate?", options:["As TV hours increase, scores tend to increase","As TV hours increase, scores tend to decrease","There is no relationship between the variables","Test scores stay constant regardless of TV hours"], correct:1, explanation:"A negative slope means the two variables move in opposite directions."},
+    {id:"L3Q4", dom:"PSDA", topic:"Line of Best Fit", type:"spr", text:"A line of best fit is y = 4.5x + 20, where x is years of experience and y is salary in thousands of dollars. According to the model, what is the predicted salary, in thousands of dollars, at 6 years?", answer:47, show:"47", explanation:"4.5(6) + 20 = 47."},
+    {id:"L3Q5", dom:"PSDA", topic:"Statistics", text:"A data set is 4, 7, 7, 9, 13. What is the median?", options:["6","7","8","9"], correct:1, explanation:"Sorted, the middle (3rd of 5) value is 7."},
+    {id:"L3Q6", dom:"PSDA", topic:"Statistics", text:"Data set A is clustered tightly around its mean; data set B is widely spread around the same mean. Which is true?", options:["A and B have equal standard deviation","A has a smaller standard deviation than B","B has a smaller standard deviation than A","Standard deviation cannot be compared here"], correct:1, explanation:"Tighter clustering around the mean means less spread, so a smaller standard deviation."},
+    {id:"L3Q7", dom:"PSDA", topic:"Probability", type:"spr", text:"A bag has 4 red and 6 blue marbles. Two are drawn without replacement. What is the probability that both are red? Enter a fraction or a decimal.", answer:2/15, tol:0.0005, show:"2/15 (or 0.1333)", explanation:"(4/10) × (3/9) = 12/90 = 2/15."},
+    {id:"L3Q8", dom:"ADV", topic:"Domain & Range", text:"What is the domain of f(x) = √(x − 5)?", options:["x ≥ 5","x > 5","x ≤ 5","All real numbers"], correct:0, explanation:"The expression under the root must be ≥ 0, so x ≥ 5."}
+  ]},
+  4: { name:"Advanced Math", questions:[
+    {id:"L4Q1", dom:"ADV", topic:"Quadratics", type:"spr", text:"What is the larger solution of x² − 6x + 8 = 0?", answer:4, show:"4", explanation:"Factors as (x−2)(x−4) = 0, so the solutions are 2 and 4."},
+    {id:"L4Q2", dom:"ADV", topic:"Factoring", text:"Factor and solve: x² + 5x − 14 = 0", options:["x = −7 or x = 2","x = 7 or x = −2","x = −14 or x = 1","x = 2 or x = 14"], correct:0, explanation:"(x+7)(x−2) = 0."},
+    {id:"L4Q3", dom:"ADV", topic:"Polynomials", text:"Expand: (2x − 3)(x + 5)", options:["2x² − 7x − 15","2x² + 13x − 15","2x² + 7x − 15","2x² + 7x + 15"], correct:2, explanation:"2x² + 10x − 3x − 15 = 2x² + 7x − 15."},
+    {id:"L4Q4", dom:"ADV", topic:"Exponential Functions", type:"spr", text:"A bacteria population doubles every 3 hours, starting at 500. What is the population after 9 hours?", answer:4000, show:"4000", explanation:"9 ÷ 3 = 3 doublings: 500 × 2³ = 4000."},
+    {id:"L4Q5", dom:"ADV", topic:"Rational Expressions", text:"Simplify: (x² − 9)/(x + 3)", options:["x − 3","x + 3","x² − 3","x − 9"], correct:0, explanation:"(x−3)(x+3)/(x+3) = x−3, for x ≠ −3."},
+    {id:"L4Q6", dom:"ADV", topic:"Nonlinear Systems", text:"Solve the system: y = x² and y = 2x + 3", options:["(3,9) and (1,−1)","(−3,9) and (1,1)","(3,6) and (−1,1)","(3,9) and (−1,1)"], correct:3, explanation:"x² − 2x − 3 = 0 → (x−3)(x+1) = 0, giving x=3,y=9 and x=−1,y=1."},
+    {id:"L4Q7", dom:"ADV", topic:"Quadratics", text:"What is the vertex of y = (x − 4)² + 7?", options:["(4, 7)","(−4, 7)","(4, −7)","(7, 4)"], correct:0, explanation:"In vertex form y=(x−h)²+k, the vertex is (h,k)=(4,7)."},
+    {id:"L4Q8", dom:"ADV", topic:"Exponents", text:"Simplify: (x³ · x⁻⁵) / x⁻²", options:["x⁴","x⁻⁴","1","x²"], correct:2, explanation:"x^(3−5) = x⁻²; then x⁻² ÷ x⁻² = x⁰ = 1."}
+  ]}
+};
+
+/* ---------- storage (browser only; falls back to memory) ---------- */
+var mem = {};
+function sget(k){ try{ var v=localStorage.getItem(k); if(v!==null) return v; }catch(e){} return Object.prototype.hasOwnProperty.call(mem,k)?mem[k]:null; }
+function sset(k,v){ mem[k]=v; try{ localStorage.setItem(k,v); }catch(e){} }
+function load(k){ try{ return JSON.parse(sget(k)||"{}"); }catch(e){ return {}; } }
+
+/* ---------- helpers ---------- */
+function esc(s){ return String(s).replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function slug(s){ return s.trim().toLowerCase().replace(/\s+/g," "); }
+function cleanName(s){ return s.replace(/[|,\r\n]+/g," ").replace(/\s+/g," ").trim().slice(0,40); }
+function hash(str){ var h=7, t="sat-math:"+str; for(var i=0;i<t.length;i++){ h=(h*31+t.charCodeAt(i))>>>0; } return h.toString(36).padStart(3,"0").slice(-3); }
+function uniq(a){ return a.filter(function(x,i){ return a.indexOf(x)===i; }); }
+function pct(n,d){ return d? Math.round(100*n/d) : 0; }
+function mins(secs){ return Math.max(1,Math.round(secs/60)); }
+
+/* typed answers: whole numbers, decimals, negatives, and fractions such as 7/2 */
+var ENTRY = /^-?(\d+\.?\d*|\.\d+)$|^-?\d+\/\d+$/;
+function cleanEntry(s){ return String(s).replace(/[−–]/g,"-").replace(/\s+/g,""); }
+function entryValue(s){
+  s=cleanEntry(s);
+  if(!ENTRY.test(s)) return null;
+  if(s.indexOf("/")>0){ var p=s.split("/"), d=+p[1]; return d? (+p[0])/d : null; }
+  return parseFloat(s);
+}
+function isCorrect(q,pick){
+  if(q.type==="spr"){ var v=entryValue(pick); return v!==null && Math.abs(v-q.answer)<=(q.tol||1e-9); }
+  return +pick===q.correct;
+}
+function computeResult(name,lesson,secs,ans){
+  var L=QUESTIONS[lesson];
+  var items=L.questions.map(function(q,i){ return {q:q,pick:ans[i],correct:isCorrect(q,ans[i])}; });
+  var score=items.filter(function(x){ return x.correct; }).length;
+  return {name:name,lesson:lesson,secs:secs,ans:ans,items:items,score:score,total:items.length};
+}
+function makeCode(name,lesson,secs,ans){
+  var body=[TAG,cleanName(name),lesson,secs,ans.join(",")].join("|");
+  return body+"|"+hash(body);
+}
+function parseCode(raw){
+  var s=String(raw).trim(), i=s.lastIndexOf("|");
+  if(i<0) return {error:"not a results code"};
+  var body=s.slice(0,i), chk=s.slice(i+1).trim();
+  if(hash(body)!==chk) return {error:"code was altered or copied incompletely"};
+  var p=body.split("|");
+  if(p.length!==5||p[0]!==TAG) return {error:"not a results code"};
+  var lesson=+p[2], L=QUESTIONS[lesson];
+  if(!L) return {error:"unknown lesson"};
+  var ans=p[4].split(",");
+  if(ans.length!==L.questions.length) return {error:"answers do not match this lesson"};
+  for(var k=0;k<ans.length;k++){
+    var q=L.questions[k];
+    if(q.type==="spr"? !ENTRY.test(ans[k]) : !/^[0-3]$/.test(ans[k])) return {error:"answers do not match this lesson"};
+  }
+  return {result:computeResult(p[1],lesson,+p[3]||0,ans)};
+}
+
+/* ---------- state ---------- */
+var app=document.getElementById("app");
+var roleBtn=document.getElementById("roleBtn");
+var S={view:"home",name:sget("sat_name")||"",lesson:null,answers:{},start:0,code:"",instructor:false};
+var tick=null;
+function stopTick(){ if(tick){ clearInterval(tick); tick=null; } }
+function go(view){ S.view=view; render(); window.scrollTo(0,0); }
+
+function render(){
+  stopTick();
+  roleBtn.textContent=S.instructor?"Student view":"Instructor view";
+  if(S.view==="home") viewHome();
+  else if(S.view==="quiz") viewQuiz();
+  else if(S.view==="results") viewResults();
+  else if(S.view==="instructor") viewInstructor();
+}
+document.getElementById("brand").addEventListener("click",function(){ S.instructor=false; go("home"); });
+roleBtn.addEventListener("click",function(){ S.instructor=!S.instructor; go(S.instructor?"instructor":"home"); });
+
+/* ---------- student: home ---------- */
+function mineCode(name,n){ return load("sat_mine")[slug(name)+"|"+n]||null; }
+
+function viewHome(){
+  app.innerHTML='<section class="card">'+
+    '<p class="eyebrow">Practice sheets</p>'+
+    '<h1>Which lesson did you just finish?</h1>'+
+    '<p class="lede">Type your name as it appears in Teams, then choose a lesson. Each sheet has 8 questions: six with four choices and two where you type the answer. You see the answers and explanations as soon as you submit.</p>'+
+    '<label class="field" for="name">Your name</label>'+
+    '<input id="name" type="text" autocomplete="name" placeholder="e.g. Alex Kim" value="'+esc(S.name)+'">'+
+    '<p class="err" id="nameErr" hidden>Enter your name first so your results can be matched to you.</p>'+
+    '<div class="grid" id="lessons"></div></section>';
+  var input=document.getElementById("name");
+  function cards(){
+    var html="";
+    [1,2,3,4].forEach(function(n){
+      var code=input.value.trim()?mineCode(input.value,n):null, r=code?parseCode(code).result:null;
+      html+='<button type="button" class="lesson" data-n="'+n+'">'+
+        (r?'<span class="done">DONE '+r.score+'/'+r.total+'</span>':'')+
+        '<div class="num">LESSON 0'+n+'</div><div class="ttl">'+esc(QUESTIONS[n].name)+'</div>'+
+        '<div class="meta">'+(r?'View your results':QUESTIONS[n].questions.length+' questions')+'</div></button>';
+    });
+    document.getElementById("lessons").innerHTML=html;
+  }
+  cards();
+  input.addEventListener("input",function(){ document.getElementById("nameErr").hidden=true; cards(); });
+  document.getElementById("lessons").addEventListener("click",function(e){
+    var b=e.target.closest(".lesson"); if(!b) return;
+    var name=cleanName(input.value);
+    if(!name){ document.getElementById("nameErr").hidden=false; input.focus(); return; }
+    S.name=name; sset("sat_name",name);
+    var n=+b.getAttribute("data-n"), code=mineCode(name,n);
+    var parsed=code?parseCode(code):null;
+    if(parsed&&parsed.result){ S.lesson=n; S.code=code; go("results"); }
+    else startLesson(n);
+  });
+}
+
+function startLesson(n){ S.lesson=n; S.answers={}; S.start=Date.now(); go("quiz"); }
+
+/* ---------- student: quiz ---------- */
+function viewQuiz(){
+  var L=QUESTIONS[S.lesson], total=L.questions.length;
+  var html='<section class="card"><header class="quiz-head"><div><p class="eyebrow">Lesson 0'+S.lesson+' · '+esc(L.name)+'</p>'+
+    '<h1>'+esc(S.name)+'</h1></div><div class="timer" id="timer">00:00</div></header><form id="qs" novalidate>';
+  L.questions.forEach(function(q,qi){
+    if(q.type==="spr"){
+      html+='<fieldset class="q"><legend class="q-topic">'+esc(q.topic)+' · type your answer</legend><p class="q-text">'+(qi+1)+'. '+esc(q.text)+'</p>'+
+        '<label class="field" for="spr-'+q.id+'">Your answer</label>'+
+        '<input class="spr" id="spr-'+q.id+'" data-qid="'+q.id+'" type="text" inputmode="decimal" autocomplete="off" maxlength="10" placeholder="e.g. 12, -3.5 or 7/2">'+
+        '<p class="hint" id="hint-'+q.id+'">Type a number. Use / for a fraction. No units or commas.</p></fieldset>';
+    } else {
+      html+='<fieldset class="q"><legend class="q-topic">'+esc(q.topic)+'</legend><p class="q-text">'+(qi+1)+'. '+esc(q.text)+'</p>';
+      q.options.forEach(function(t,oi){
+        html+='<label class="opt"><input class="sr" type="radio" name="'+q.id+'" value="'+oi+'"><span class="bubble">'+String.fromCharCode(65+oi)+'</span><span>'+esc(t)+'</span></label>';
+      });
+      html+='</fieldset>';
+    }
+  });
+  html+='</form><div class="foot"><span class="progress" id="prog" role="status">0 of '+total+' answered</span>'+
+    '<button class="btn" id="submit" type="button" disabled>Submit sheet</button></div></section>';
+  app.innerHTML=html;
+  var form=document.getElementById("qs");
+  function update(e){
+    var t=e&&e.target;
+    if(t&&t.type==="radio"){ S.answers[t.name]=t.value; }
+    if(t&&t.classList&&t.classList.contains("spr")){
+      var qid=t.getAttribute("data-qid"), raw=t.value.trim(), hint=document.getElementById("hint-"+qid);
+      if(!raw){ delete S.answers[qid]; hint.className="hint"; hint.textContent="Type a number. Use / for a fraction. No units or commas."; }
+      else if(entryValue(raw)===null){ delete S.answers[qid]; hint.className="hint bad"; hint.textContent="Enter a number such as 12, -3.5 or 7/2."; }
+      else { S.answers[qid]=cleanEntry(raw); hint.className="hint"; hint.textContent="Type a number. Use / for a fraction. No units or commas."; }
+    }
+    var n=Object.keys(S.answers).length;
+    document.getElementById("prog").textContent=n+" of "+total+" answered";
+    document.getElementById("submit").disabled=n<total;
+  }
+  form.addEventListener("change",update);
+  form.addEventListener("input",update);
+  form.addEventListener("submit",function(e){ e.preventDefault(); });
+  document.getElementById("submit").addEventListener("click",submitQuiz);
+  var timer=document.getElementById("timer");
+  tick=setInterval(function(){
+    var s=Math.floor((Date.now()-S.start)/1000);
+    timer.textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+  },1000);
+}
+
+function submitQuiz(){
+  var L=QUESTIONS[S.lesson];
+  var ans=L.questions.map(function(q){ return S.answers[q.id]; });
+  var secs=Math.floor((Date.now()-S.start)/1000);
+  var code=makeCode(S.name,S.lesson,secs,ans);
+  var mine=load("sat_mine"); mine[slug(S.name)+"|"+S.lesson]=code; sset("sat_mine",JSON.stringify(mine));
+  S.code=code; go("results");
+}
+
+/* ---------- student: results ---------- */
+function setMsg(id,text){ var el=document.getElementById(id); if(el) el.textContent=text; }
+function copyText(text,box,msgId){
+  var done=function(){ setMsg(msgId,"Copied."); };
+  var fail=function(){ if(box){ box.focus(); box.select(); } setMsg(msgId,"Select the text and press Ctrl+C (Cmd+C on a Mac)."); };
+  try{ navigator.clipboard.writeText(text).then(done,fail); }catch(e){ fail(); }
+}
+
+function viewResults(){
+  var p=parseCode(S.code), r=p.result;
+  var html='<div class="stack"><section class="card score"><p class="eyebrow">Lesson 0'+r.lesson+' · '+esc(QUESTIONS[r.lesson].name)+'</p>'+
+    '<div class="score-big">'+r.score+'/'+r.total+'</div>'+
+    '<div class="note">'+esc(r.name)+' · '+mins(r.secs)+' min</div><div class="sheet">';
+  r.items.forEach(function(x,i){ html+='<div class="dot '+(x.correct?'ok':'no')+'" title="Question '+(i+1)+(x.correct?' correct':' incorrect')+'">'+(i+1)+'</div>'; });
+  html+='</div></section>'+
+    '<section class="codebox"><h2>Send this code to your instructor</h2>'+
+    '<p class="note" style="margin:0 0 12px">Copy it and send it to your instructor as a private message in Teams. This is how your result reaches your instructor, so please do this before you close the page.</p>'+
+    '<textarea id="code" rows="2" readonly aria-label="Your results code">'+esc(S.code)+'</textarea>'+
+    '<div class="row" style="margin-top:12px"><button class="btn" id="copy" type="button">Copy code</button><span class="note" id="copyMsg" style="margin:0" role="status"></span></div></section>'+
+    '<section class="card">';
+  r.items.forEach(function(x,i){
+    html+='<fieldset class="q"><legend class="q-topic">'+esc(x.q.topic)+(x.q.type==="spr"?' · typed answer':'')+'</legend><p class="q-text">'+(i+1)+'. '+esc(x.q.text)+'</p>';
+    if(x.q.type==="spr"){
+      html+='<div class="entry"><span>Your answer</span><span class="mine '+(x.correct?'ok':'no')+'">'+esc(x.pick)+'</span>'+
+        '<span>Correct answer</span><span class="mine ok">'+esc(x.q.show)+'</span></div>';
+    } else {
+      x.q.options.forEach(function(t,oi){
+        var cls=oi===x.q.correct?" right":(oi===+x.pick?" wrong":"");
+        html+='<div class="opt'+cls+'"><span class="bubble">'+String.fromCharCode(65+oi)+'</span><span>'+esc(t)+'</span></div>';
+      });
+    }
+    html+='<div class="explain">'+esc(x.q.explanation)+'</div></fieldset>';
+  });
+  html+='</section><div class="row"><button class="btn alt" id="back" type="button">Back to lessons</button>'+
+    '<button class="btn alt" id="retake" type="button">Retake this sheet</button></div></div>';
+  app.innerHTML=html;
+  var box=document.getElementById("code");
+  document.getElementById("copy").addEventListener("click",function(){ copyText(S.code,box,"copyMsg"); });
+  box.addEventListener("focus",function(){ box.select(); });
+  document.getElementById("back").addEventListener("click",function(){ go("home"); });
+  document.getElementById("retake").addEventListener("click",function(){ startLesson(r.lesson); });
+}
+
+/* ---------- instructor ---------- */
+function importedResults(){
+  var imp=load("sat_imported"), out=[];
+  Object.keys(imp).forEach(function(k){ var p=parseCode(imp[k]); if(p.result) out.push(p.result); });
+  return out;
+}
+function pill(p){ return '<span class="pill '+(p>=75?'hi':p>=50?'mid':'lo')+'">'+p+'%</span>'; }
+function domainTotals(rs){
+  var d={}; rs.forEach(function(r){ r.items.forEach(function(x){ var t=d[x.q.dom]=d[x.q.dom]||{c:0,n:0}; t.n++; if(x.correct) t.c++; }); });
+  return d;
+}
+
+function feedbackText(name,rs){
+  rs=rs.slice().sort(function(a,b){ return a.lesson-b.lesson; });
+  var lines=["Feedback for "+name,""];
+  rs.forEach(function(r){ lines.push("Lesson "+r.lesson+" "+QUESTIONS[r.lesson].name+": "+r.score+"/"+r.total+" ("+mins(r.secs)+" min)"); });
+  var done=rs.map(function(r){ return r.lesson; }), todo=[1,2,3,4].filter(function(n){ return done.indexOf(n)<0; });
+  if(todo.length) lines.push("Not yet completed: Lesson "+todo.join(", Lesson "));
+  var dt=domainTotals(rs);
+  lines.push("","By SAT domain:");
+  Object.keys(DOMAINS).forEach(function(k){ if(dt[k]) lines.push("  "+DOMAINS[k]+": "+dt[k].c+"/"+dt[k].n+" ("+pct(dt[k].c,dt[k].n)+"%)"); });
+  var missed=[], solid=[];
+  rs.forEach(function(r){ r.items.forEach(function(x){ (x.correct?solid:missed).push(x.q.topic); }); });
+  missed=uniq(missed); solid=uniq(solid).filter(function(t){ return missed.indexOf(t)<0; });
+  lines.push("");
+  if(rs.length>1){
+    var s=rs.slice().sort(function(a,b){ return b.score/b.total-a.score/a.total; });
+    lines.push("Strongest lesson: "+QUESTIONS[s[0].lesson].name+" ("+s[0].score+"/"+s[0].total+")");
+    lines.push("Weakest lesson: "+QUESTIONS[s[s.length-1].lesson].name+" ("+s[s.length-1].score+"/"+s[s.length-1].total+")");
+  }
+  lines.push("Topics to revisit: "+(missed.length?missed.join(", "):"none so far"));
+  lines.push("Topics secure: "+(solid.length?solid.join(", "):"none yet"));
+  return lines.join("\n");
+}
+
+function viewInstructor(){
+  app.innerHTML='<div class="stack"><section class="card"><p class="eyebrow">Instructor</p><h1>Class results</h1>'+
+    '<p class="lede">Paste the results codes students send you, one per line. Everything is stored in this browser only, so use the same browser each time.</p>'+
+    '<label class="field" for="codes">Results codes</label>'+
+    '<textarea id="codes" rows="5" placeholder="SAT2|Alex Kim|1|1420|17,2,0,1,1,60,0,2|abc"></textarea>'+
+    '<div class="row" style="margin-top:12px"><button class="btn" id="import" type="button">Import codes</button>'+
+    '<span class="note" id="importMsg" style="margin:0" role="status"></span></div></section>'+
+    '<div id="dash" class="stack"></div></div>';
+  document.getElementById("import").addEventListener("click",function(){
+    var ta=document.getElementById("codes"), imp=load("sat_imported"), ok=0, bad=[];
+    ta.value.split(/\r?\n/).forEach(function(line){
+      if(!line.trim()) return;
+      var i=line.indexOf(TAG+"|");
+      if(i<0){ bad.push("not a results code"); return; }
+      var code=line.slice(i).trim(), p=parseCode(code);
+      if(p.error){ bad.push(p.error); return; }
+      imp[slug(p.result.name)+"|"+p.result.lesson]=code; ok++;
+    });
+    sset("sat_imported",JSON.stringify(imp));
+    var msg="Imported "+ok+" result"+(ok===1?"":"s")+".";
+    if(bad.length) msg+=" Skipped "+bad.length+" ("+uniq(bad).join("; ")+").";
+    setMsg("importMsg",msg); if(ok) ta.value="";
+    dash();
+  });
+  dash();
+}
+
+function dash(){
+  var el=document.getElementById("dash"), results=importedResults();
+  if(!results.length){
+    el.innerHTML='<section class="card"><p class="note" style="margin:0">No results imported yet. When students send their codes, paste them above and the class summary appears here.</p></section>';
+    return;
+  }
+  var students={}; results.forEach(function(r){ var k=slug(r.name); (students[k]=students[k]||{name:r.name,rs:[]}).rs.push(r); });
+  var keys=Object.keys(students).sort();
+  var avg=pct(results.reduce(function(a,r){ return a+r.score; },0),results.reduce(function(a,r){ return a+r.total; },0));
+  var topics={}; results.forEach(function(r){ r.items.forEach(function(x){ var t=topics[x.q.topic]=topics[x.q.topic]||{c:0,n:0}; t.n++; if(x.correct) t.c++; }); });
+  var trows=Object.keys(topics).map(function(t){ return {t:t,p:pct(topics[t].c,topics[t].n),n:topics[t].n}; }).sort(function(a,b){ return a.p-b.p; });
+  var dt=domainTotals(results);
+
+  var h='<div class="stats"><div class="stat"><b>'+keys.length+'</b><span>Students</span></div><div class="stat"><b>'+results.length+'</b><span>Sheets</span></div><div class="stat"><b>'+avg+'%</b><span>Avg score</span></div></div>';
+  h+='<section class="card"><h2>By SAT domain</h2><div class="tablewrap"><table><tr><th>Domain</th><th class="n">Accuracy</th><th class="n">Answers</th></tr>';
+  Object.keys(DOMAINS).forEach(function(k){ if(dt[k]) h+='<tr><td>'+esc(DOMAINS[k])+'</td><td class="n">'+pill(pct(dt[k].c,dt[k].n))+'</td><td class="n">'+dt[k].n+'</td></tr>'; });
+  h+='</table></div></section>';
+  h+='<section class="card"><h2>Topics to review</h2><div class="tablewrap"><table><tr><th>Topic</th><th class="n">Accuracy</th><th class="n">Answers</th></tr>';
+  trows.forEach(function(t){ h+='<tr><td>'+esc(t.t)+'</td><td class="n">'+pill(t.p)+'</td><td class="n">'+t.n+'</td></tr>'; });
+  h+='</table></div></section><section class="card"><h2>Student progress</h2><div class="tablewrap"><table><tr><th>Student</th><th class="n">L1</th><th class="n">L2</th><th class="n">L3</th><th class="n">L4</th></tr>';
+  keys.forEach(function(k){
+    h+='<tr><td>'+esc(students[k].name)+'</td>';
+    [1,2,3,4].forEach(function(n){
+      var r=students[k].rs.filter(function(x){ return x.lesson===n; })[0];
+      h+='<td class="n">'+(r?r.score+'/'+r.total:'–')+'</td>';
+    });
+    h+='</tr>';
+  });
+  h+='</table></div></section><section class="card"><h2>Student feedback</h2>'+
+    '<label class="field" for="stu">Choose a student</label><select id="stu">';
+  keys.forEach(function(k){ h+='<option value="'+esc(k)+'">'+esc(students[k].name)+'</option>'; });
+  h+='</select><pre class="report" id="report"></pre><div class="row" style="margin-top:12px"><button class="btn alt" id="copyFb" type="button">Copy feedback</button>'+
+    '<button class="btn alt" id="copyCsv" type="button">Copy all results as CSV</button><span class="note" id="fbMsg" style="margin:0" role="status"></span></div></section>'+
+    '<section class="card"><h2>Imported data</h2><p class="note" style="margin:0 0 12px">Clear everything imported in this browser, for example between cohorts.</p>'+
+    '<div class="row" id="clearRow"><button class="btn alt" id="clear" type="button">Clear imported data</button></div></section>';
+  el.innerHTML=h;
+
+  var sel=document.getElementById("stu"), rep=document.getElementById("report");
+  function showReport(){ rep.textContent=feedbackText(students[sel.value].name,students[sel.value].rs); }
+  sel.addEventListener("change",showReport); showReport();
+  document.getElementById("copyFb").addEventListener("click",function(){ copyText(rep.textContent,null,"fbMsg"); });
+  document.getElementById("copyCsv").addEventListener("click",function(){
+    var rows=["student,lesson,score,total,minutes"];
+    results.slice().sort(function(a,b){ return slug(a.name)<slug(b.name)?-1:slug(a.name)>slug(b.name)?1:a.lesson-b.lesson; })
+      .forEach(function(r){ rows.push('"'+r.name.replace(/"/g,'""')+'",'+r.lesson+','+r.score+','+r.total+','+mins(r.secs)); });
+    copyText(rows.join("\n"),null,"fbMsg");
+  });
+  document.getElementById("clear").addEventListener("click",function(){
+    document.getElementById("clearRow").innerHTML='<span class="note" style="margin:0">Delete all imported results?</span>'+
+      '<button class="btn" id="yes" type="button">Yes, clear</button><button class="btn alt" id="no" type="button">Cancel</button>';
+    document.getElementById("yes").addEventListener("click",function(){ sset("sat_imported","{}"); dash(); });
+    document.getElementById("no").addEventListener("click",dash);
+  });
+}
+
+render();
+})();
+</script>
+</body>
+</html>
