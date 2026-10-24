@@ -153,11 +153,11 @@ var QUESTIONS = {
     {id:"L1Q1", dom:"ALG", topic:"Linear Equations", type:"spr", text:"Solve for x: 3(x − 4) = 2x + 5. Enter the value of x.", answer:17, show:"17", explanation:"3x − 12 = 2x + 5, so x = 17."},
     {id:"L1Q2", dom:"ALG", topic:"Systems of Equations", text:"If 2x + y = 10 and x − y = 2, what is the value of x?", options:["2","3","4","6"], correct:2, explanation:"Adding both equations: 3x = 12, so x = 4."},
     {id:"L1Q3", dom:"ALG", topic:"Inequalities", text:"Solve the inequality: 5 − 2x > 1", options:["x < 2","x > 2","x < −2","x > −2"], correct:0, explanation:"−2x > −4, and dividing by a negative flips the sign: x < 2."},
-    {id:"L1Q4", dom:"PSDA", topic:"Ratios & Proportions", text:"A recipe uses 3 cups of flour for every 2 cups of sugar. How many cups of flour are needed for 5 cups of sugar?", options:["6","7.5","8","10"], correct:1, explanation:"3/2 = f/5, so f = 7.5."},
+    {id:"L1Q4", dom:"ALG", topic:"Straight Lines", text:"A line passes through the points (2, 5) and (6, 13). What is the equation of the line?", options:["y = 0.5x + 4","y = 2x − 1","y = 2x + 1","y = 8x − 11"], correct:2, explanation:"Slope = (13 − 5) ÷ (6 − 2) = 2. Then 5 = 2(2) + b, so b = 1 and y = 2x + 1."},
     {id:"L1Q5", dom:"PSDA", topic:"Percentages", text:"A price of $80 increases by 15%. What is the new price?", options:["$95","$92","$88","$84"], correct:1, explanation:"80 × 1.15 = $92."},
     {id:"L1Q6", dom:"PSDA", topic:"Rates", type:"spr", text:"A car travels 210 miles in 3.5 hours. What is its average speed, in miles per hour?", answer:60, show:"60", explanation:"210 ÷ 3.5 = 60 mph."},
     {id:"L1Q7", dom:"ADV", topic:"Absolute Value", text:"Solve: |2x − 3| = 7", options:["x = 5 or x = −2","x = 5 only","x = −2 only","x = 2 or x = −5"], correct:0, explanation:"2x − 3 = 7 gives x = 5; 2x − 3 = −7 gives x = −2."},
-    {id:"L1Q8", dom:"ALG", topic:"Word Problems", text:"Sam is twice as old as his sister. In 5 years, the sum of their ages will be 40. How old is Sam now?", options:["10","15","20","25"], correct:2, explanation:"(s+5)+(2s+5)=40 → s=10, so Sam is 2s = 20."}
+    {id:"L1Q8", dom:"ALG", topic:"Standard Form", text:"The equation 4x + 3y = 24 represents a line in the xy-plane. What is the x-intercept of the line?", options:["(0, 8)","(3, 0)","(6, 0)","(8, 0)"], correct:2, explanation:"The x-intercept is where y = 0: 4x = 24, so x = 6. The point (0, 8) is the y-intercept."}
   ]},
   2: { name:"Geometry & Trigonometry", questions:[
     {id:"L2Q1", dom:"GEO", topic:"Triangles", text:"In triangle ABC, angle A = 50° and angle B = 65°. What is the exterior angle at vertex C?", options:["65°","105°","115°","125°"], correct:2, explanation:"Interior C = 180−50−65 = 65°, so the exterior angle = 180−65 = 115°."},
@@ -176,7 +176,7 @@ var QUESTIONS = {
     {id:"L3Q4", dom:"PSDA", topic:"Line of Best Fit", type:"spr", text:"A line of best fit is y = 4.5x + 20, where x is years of experience and y is salary in thousands of dollars. According to the model, what is the predicted salary, in thousands of dollars, at 6 years?", answer:47, show:"47", explanation:"4.5(6) + 20 = 47."},
     {id:"L3Q5", dom:"PSDA", topic:"Statistics", text:"A data set is 4, 7, 7, 9, 13. What is the median?", options:["6","7","8","9"], correct:1, explanation:"Sorted, the middle (3rd of 5) value is 7."},
     {id:"L3Q6", dom:"PSDA", topic:"Statistics", text:"Data set A is clustered tightly around its mean; data set B is widely spread around the same mean. Which is true?", options:["A and B have equal standard deviation","A has a smaller standard deviation than B","B has a smaller standard deviation than A","Standard deviation cannot be compared here"], correct:1, explanation:"Tighter clustering around the mean means less spread, so a smaller standard deviation."},
-    {id:"L3Q7", dom:"PSDA", topic:"Probability", type:"spr", text:"A bag has 4 red and 6 blue marbles. Two are drawn without replacement. What is the probability that both are red? Enter a fraction or a decimal.", answer:2/15, tol:0.0005, show:"2/15 (or 0.1333)", explanation:"(4/10) × (3/9) = 12/90 = 2/15."},
+    {id:"L3Q7", dom:"PSDA", topic:"Probability", type:"spr", text:"A bag has 4 red and 6 blue marbles. Two are drawn without replacement. What is the probability that both are red? Enter a fraction or a decimal.", answer:2/15, tol:0.0005, show:"2/15 (or .1333)", explanation:"(4/10) × (3/9) = 12/90 = 2/15."},
     {id:"L3Q8", dom:"ADV", topic:"Domain & Range", text:"What is the domain of f(x) = √(x − 5)?", options:["x ≥ 5","x > 5","x ≤ 5","All real numbers"], correct:0, explanation:"The expression under the root must be ≥ 0, so x ≥ 5."}
   ]},
   4: { name:"Advanced Math", questions:[
@@ -209,6 +209,9 @@ function mins(secs){ return Math.max(1,Math.round(secs/60)); }
 /* typed answers: whole numbers, decimals, negatives, and fractions such as 7/2 */
 var ENTRY = /^-?(\d+\.?\d*|\.\d+)$|^-?\d+\/\d+$/;
 function cleanEntry(s){ return String(s).replace(/[−–]/g,"-").replace(/\s+/g,""); }
+/* real-test rule: up to 5 characters, or 6 if the answer is negative */
+function entryTooLong(s){ s=cleanEntry(s); return s.length>(s.charAt(0)==="-"?6:5); }
+var HINT="Type a number. Use / for a fraction. No symbols, units or commas. Up to 5 characters (6 with a minus sign).";
 function entryValue(s){
   s=cleanEntry(s);
   if(!ENTRY.test(s)) return null;
@@ -273,7 +276,7 @@ function viewHome(){
   app.innerHTML='<section class="card">'+
     '<p class="eyebrow">Practice sheets</p>'+
     '<h1>Which lesson did you just finish?</h1>'+
-    '<p class="lede">Type your name as it appears in Teams, then choose a lesson. Each sheet has 8 questions: six with four choices and two where you type the answer. You see the answers and explanations as soon as you submit.</p>'+
+    '<p class="lede">Type your name as it appears in Teams, then choose a lesson. Each sheet has 8 questions: six with four choices and two where you type the answer, following the real test rules (up to 5 characters, or 6 with a minus sign, and no symbols). You see the answers and explanations as soon as you submit.</p>'+
     '<label class="field" for="name">Your name</label>'+
     '<input id="name" type="text" autocomplete="name" placeholder="e.g. Alex Kim" value="'+esc(S.name)+'">'+
     '<p class="err" id="nameErr" hidden>Enter your name first so your results can be matched to you.</p>'+
@@ -315,8 +318,8 @@ function viewQuiz(){
     if(q.type==="spr"){
       html+='<fieldset class="q"><legend class="q-topic">'+esc(q.topic)+' · type your answer</legend><p class="q-text">'+(qi+1)+'. '+esc(q.text)+'</p>'+
         '<label class="field" for="spr-'+q.id+'">Your answer</label>'+
-        '<input class="spr" id="spr-'+q.id+'" data-qid="'+q.id+'" type="text" inputmode="decimal" autocomplete="off" maxlength="10" placeholder="e.g. 12, -3.5 or 7/2">'+
-        '<p class="hint" id="hint-'+q.id+'">Type a number. Use / for a fraction. No units or commas.</p></fieldset>';
+        '<input class="spr" id="spr-'+q.id+'" data-qid="'+q.id+'" type="text" inputmode="decimal" autocomplete="off" maxlength="12" placeholder="e.g. 12, -3.5 or 7/2">'+
+        '<p class="hint" id="hint-'+q.id+'">'+HINT+'</p></fieldset>';
     } else {
       html+='<fieldset class="q"><legend class="q-topic">'+esc(q.topic)+'</legend><p class="q-text">'+(qi+1)+'. '+esc(q.text)+'</p>';
       q.options.forEach(function(t,oi){
@@ -334,9 +337,10 @@ function viewQuiz(){
     if(t&&t.type==="radio"){ S.answers[t.name]=t.value; }
     if(t&&t.classList&&t.classList.contains("spr")){
       var qid=t.getAttribute("data-qid"), raw=t.value.trim(), hint=document.getElementById("hint-"+qid);
-      if(!raw){ delete S.answers[qid]; hint.className="hint"; hint.textContent="Type a number. Use / for a fraction. No units or commas."; }
+      if(!raw){ delete S.answers[qid]; hint.className="hint"; hint.textContent=HINT; }
       else if(entryValue(raw)===null){ delete S.answers[qid]; hint.className="hint bad"; hint.textContent="Enter a number such as 12, -3.5 or 7/2."; }
-      else { S.answers[qid]=cleanEntry(raw); hint.className="hint"; hint.textContent="Type a number. Use / for a fraction. No units or commas."; }
+      else if(entryTooLong(raw)){ delete S.answers[qid]; hint.className="hint bad"; hint.textContent="Too long: the test allows 5 characters (6 with a minus sign). Write a long fraction as a decimal, such as .1333."; }
+      else { S.answers[qid]=cleanEntry(raw); hint.className="hint"; hint.textContent=HINT; }
     }
     var n=Object.keys(S.answers).length;
     document.getElementById("prog").textContent=n+" of "+total+" answered";
